@@ -2,6 +2,9 @@ import { Suspense } from "react";
 
 import { LoginForm } from "./login-form";
 
+// OIDC vars are set at container runtime, not image build time.
+export const dynamic = "force-dynamic";
+
 function oidcEnabled(): boolean {
   const clientId = process.env.SCS_HEALTH_OIDC_CLIENT_ID?.trim();
   const clientSecret = process.env.SCS_HEALTH_OIDC_CLIENT_SECRET?.trim();

@@ -145,6 +145,31 @@ In your SCS realm (e.g. **Clients → Create client**):
 | Standard flow | Enabled |
 | Direct access grants | Off (recommended) |
 
+Root URL
+```text
+https://health.your.domain.com
+```
+Home URL
+```text
+https://health.your.domain.com
+```
+Valid redirect URL
+```text
+https://health.your.domain.com/api/auth/callback/keycloak
+```
+
+Valid post logout redirect URIs
+```text
+https://health.your.domain.com/*
+```
+
+Web origins
+```text
+https://health.your.domain.com
+```
+
+
+
 ### 2. Redirect URIs and web origins
 
 Add the NextAuth callback URL for your health dashboard host:
@@ -156,10 +181,10 @@ https://${SCS_HEALTH_DOMAIN}/api/auth/callback/keycloak
 Example:
 
 ```text
-https://health.scs.sammlungen.io/api/auth/callback/keycloak
+https://health.your.domain.com/api/auth/callback/keycloak
 ```
 
-Set **Valid redirect URIs** to that URL (or `https://health.scs.sammlungen.io/*` during setup).
+Set **Valid redirect URIs** to that URL (or `https://health.your.domain.com/*` during setup).
 
 Set **Web origins** to:
 
@@ -172,9 +197,9 @@ https://${SCS_HEALTH_DOMAIN}
 On the client **Credentials** tab, copy the secret into the deployment `.env`:
 
 ```bash
-SCS_HEALTH_OIDC_CLIENT_ID=https://health.scs.sammlungen.io
+SCS_HEALTH_OIDC_CLIENT_ID=https://health.your.domain.com
 SCS_HEALTH_OIDC_CLIENT_SECRET=<secret-from-keycloak>
-SCS_HEALTH_OIDC_ISSUER=https://auth.scs.sammlungen.io/realms/scs
+SCS_HEALTH_OIDC_ISSUER=https://auth.your.domain.com/realms/scs
 ```
 
 If `KC_URL` and `KC_REALM` are already set correctly, you can omit `SCS_HEALTH_OIDC_ISSUER` and let the app build the issuer automatically.
@@ -186,6 +211,8 @@ docker compose up -d --force-recreate scs--health
 ```
 
 The login page shows **Sign in with Keycloak** when all three OIDC variables are non-empty. Local username/password login remains available.
+
+> **Note:** The login route is rendered dynamically at runtime so OIDC env vars from Docker Compose are picked up without rebuilding the image. After changing only `.env`, recreate is enough.
 
 ### 5. Access control (optional)
 

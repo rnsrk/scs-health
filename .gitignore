@@ -9,8 +9,10 @@ out/
 next-env.d.ts
 *.tsbuildinfo
 
-# local env (root *.env also applies)
-.env*.local
+# local env (root *.env also applies when nested in deployment repo)
+.env
+.env.*
+!.env.example
 
 # debug logs
 npm-debug.log*

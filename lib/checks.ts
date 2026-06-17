@@ -127,5 +127,6 @@ export async function checkWebsite(def: ServiceDefinition): Promise<CheckResult>
 
 export async function checkAllWebsites(): Promise<CheckResult[]> {
   const defs = getServiceDefinitions();
-  return Promise.all(defs.map((def) => checkWebsite(def)));
+  const results = await Promise.all(defs.map((def) => checkWebsite(def)));
+  return results.sort((a, b) => a.name.localeCompare(b.name));
 }

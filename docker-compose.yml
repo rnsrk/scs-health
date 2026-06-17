@@ -1,0 +1,39 @@
+services:
+  scs--health:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: scs--health
+    restart: unless-stopped
+    user: root
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      SCS_MANAGER_DOMAIN: ${SCS_MANAGER_DOMAIN}
+      SCS_MANAGER_SECOND_DOMAIN: ${SCS_MANAGER_SECOND_DOMAIN}
+      KC_DOMAIN: ${KC_DOMAIN}
+      KC_URL: ${KC_URL}
+      KC_REALM: ${KC_REALM}
+      NEXTCLOUD_NEXTCLOUD_DOMAIN: ${NEXTCLOUD_NEXTCLOUD_DOMAIN}
+      NEXTCLOUD_ONLYOFFICE_DOMAIN: ${NEXTCLOUD_ONLYOFFICE_DOMAIN}
+      JUPYTERHUB_DOMAIN: ${JUPYTERHUB_DOMAIN}
+      OPEN_GDB_DOMAIN: ${OPEN_GDB_DOMAIN}
+      PROJECT_WEBSITE_DOMAIN: ${PROJECT_WEBSITE_DOMAIN}
+      WEBPROTEGE_WEBPROTEGE_DOMAIN: ${WEBPROTEGE_WEBPROTEGE_DOMAIN}
+      SCS_DBMS_DOMAIN: ${SCS_DBMS_DOMAIN:-dbms.${SCS_SUBDOMAIN:-scs}.${SCS_BASE_DOMAIN:-localhost}}
+      SCS_PORTAINER_DOMAIN: ${SCS_PORTAINER_DOMAIN}
+      SCS_TRAEFIK_DOMAIN: ${SCS_TRAEFIK_DOMAIN:-reverse-proxy.${SCS_SUBDOMAIN:-scs}.${SCS_BASE_DOMAIN:-localhost}}
+      NEXTAUTH_URL: https://${SCS_HEALTH_DOMAIN:-health.${SCS_SUBDOMAIN:-scs}.${SCS_BASE_DOMAIN:-localhost}}
+      NEXTAUTH_SECRET: ${SCS_HEALTH_AUTH_SECRET}
+      SCS_HEALTH_AUTH_SECRET: ${SCS_HEALTH_AUTH_SECRET}
+      SCS_HEALTH_AUTH_USER: ${SCS_HEALTH_AUTH_USER:-${SCS_TRAEFIK_USERNAME}}
+      SCS_HEALTH_AUTH_PASSWORD: ${SCS_HEALTH_AUTH_PASSWORD:-${SCS_TRAEFIK_PASSWORD}}
+      SCS_HEALTH_OIDC_CLIENT_ID: ${SCS_HEALTH_OIDC_CLIENT_ID:-}
+      SCS_HEALTH_OIDC_CLIENT_SECRET: ${SCS_HEALTH_OIDC_CLIENT_SECRET:-}
+      SCS_HEALTH_OIDC_ISSUER: ${SCS_HEALTH_OIDC_ISSUER:-}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

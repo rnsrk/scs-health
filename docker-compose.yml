@@ -1,9 +1,9 @@
 services:
-  scs--health:
+  health--health--app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: scs--health
+    container_name: health--health--app
     restart: unless-stopped
     user: root
     volumes:

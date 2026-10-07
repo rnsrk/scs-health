@@ -254,5 +254,5 @@ Dockerfile     Multi-stage production build (standalone output)
 
 When deployed via the SODa stack, see the parent repo:
 
-- [SCS Health (deployment guide)](../docs/service-infrastructure/scs-health.md)
-- [Service infrastructure overview](../docs/service-infrastructure/index.md)
+- [SCS Health (deployment guide)](../docs/en/technical/service-infrastructure/scs-health.md)
+- [Service infrastructure overview](../docs/en/technical/service-infrastructure/index.md)

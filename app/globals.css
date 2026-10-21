@@ -318,6 +318,17 @@ a:hover {
   font-family: ui-monospace, monospace;
 }
 
+.scs-table .mono {
+  font-family: ui-monospace, monospace;
+}
+
+.scs-version-updates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 0.75rem;
+  align-items: center;
+}
+
 .scs-badge {
   display: inline-block;
   padding: 2px 8px;

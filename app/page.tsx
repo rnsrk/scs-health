@@ -4,6 +4,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 
 import { ContainerIssuesModal } from "@/app/components/container-issues-modal";
+import { ImageVersions } from "@/app/components/image-versions";
 import { MenuBarDivider } from "@/app/components/menu-bar-divider";
 import { SodaFooter } from "@/app/components/soda-footer";
 import type { StatusResponse } from "@/lib/checks";
@@ -43,6 +44,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [containerModalOpen, setContainerModalOpen] = useState(false);
+  const [versionsRefreshKey, setVersionsRefreshKey] = useState(0);
 
   const load = useCallback(async () => {
     try {
@@ -87,7 +89,14 @@ export default function HomePage() {
             {session?.user?.name && (
               <span className="scs-list-item-sub">{session.user.name}</span>
             )}
-            <button type="button" onClick={() => void load()} className="scs-btn scs-btn-secondary">
+            <button
+              type="button"
+              onClick={() => {
+                void load();
+                setVersionsRefreshKey((key) => key + 1);
+              }}
+              className="scs-btn scs-btn-secondary"
+            >
               Refresh
             </button>
             <button
@@ -199,6 +208,8 @@ export default function HomePage() {
                 </div>
               </section>
             )}
+
+            <ImageVersions refreshKey={versionsRefreshKey} />
           </>
         )}
       </main>

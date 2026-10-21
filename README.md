@@ -33,6 +33,16 @@ When the Docker socket is mounted (default in deployment), the app runs `docker 
 
 The status API auto-refreshes every 30 seconds in the UI.
 
+### Images
+
+`/api/versions` groups containers by the image reference they were started from and asks the registry (Docker Hub, ghcr.io, quay.io; anonymous pull tokens) for:
+
+- **Newer tags** of the same shape: same precision and variant, so `1.27-alpine` is compared with `1.31-alpine`, not with `1.31.2` or `1.31`. A major jump also shows the newest tag within the current major.
+- **New build**: the tag now points to a different digest than the one pulled locally (catches patch releases behind a `major.minor` or `latest` tag).
+- **Recreate pending**: the tag was pulled again, but containers still run the old image.
+
+Local Compose builds are checked against their base image from `SCS_HEALTH_BUILD_BASES`. Registry answers are cached for `SCS_HEALTH_VERSION_CACHE_MINUTES` (default 360).
+
 ## Authentication
 
 Two login methods can be active at the same time:
@@ -112,6 +122,8 @@ Set these in the **deployment root** `.env` (inherited by `scs--health` via `doc
 | `SCS_HEALTH_OIDC_CLIENT_SECRET` | For SSO | Keycloak client secret |
 | `SCS_HEALTH_OIDC_ISSUER` | For SSO | OIDC issuer URL (see below) |
 | `SCS_HEALTH_DOCKER_ENABLED` | No | Set to `false` to skip Docker container checks |
+| `SCS_HEALTH_BUILD_BASES` | No | Base images of local builds, `service=image:tag` comma-separated |
+| `SCS_HEALTH_VERSION_CACHE_MINUTES` | No | Registry cache lifetime for the Images section (default `360`) |
 
 `KC_URL` and `KC_REALM` are already passed into the container. If `SCS_HEALTH_OIDC_ISSUER` is unset, the issuer is derived as:
 

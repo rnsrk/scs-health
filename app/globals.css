@@ -1,4 +1,4 @@
-/* SODa corporate design — aligned with keycloak/themes/scs and soda_scs_manager_theme */
+/* SODa corporate design — aligned with keycloak/themes/scs and scs_custom_theme */
 
 :root {
   --scs-orange: #e68500;
@@ -47,7 +47,7 @@ a:hover {
   color: var(--scs-orange-hover);
 }
 
-/* Menu-bar motif: orange dot + black rule (soda_scs_manager_theme) */
+/* Menu-bar motif: orange dot + black rule (as in the SCS Manager UI) */
 .scs-menu-bar-divider {
   position: relative;
   display: flex;
